@@ -683,6 +683,59 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
+        ts_ls = {
+          -- Optional: enable React/TS inlay hints
+          settings = {
+            typescript = {
+              inlayHints = {
+                includeInlayParameterNameHints = 'all',
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+            javascript = {
+              inlayHints = {
+                includeInlayParameterNameHints = 'all',
+                includeInlayVariableTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+              },
+            },
+          },
+
+          -- IMPORTANT: these filetypes give you JS, TS, JSX, TSX
+          filetypes = {
+            'javascript',
+            'javascriptreact',
+            'typescript',
+            'typescriptreact',
+          },
+
+          -- Better project detection (optional but recommended)
+          root_dir = function(fname)
+            return require('lspconfig.util').root_pattern('tsconfig.json', 'jsconfig.json', 'package.json', '.git')(fname)
+          end,
+        },
+
+        -- Dockerfile LSP
+        dockerls = {},
+
+        -- Docker Compose LSP
+        docker_compose_language_service = {
+          filetypes = { 'yaml.docker-compose' },
+        },
+
+        -- YAML LSP (recommended for compose + k8s + ci/cd)
+        yamlls = {
+          settings = {
+            yaml = {
+              keyOrdering = false,
+            },
+          },
+        },
 
         lua_ls = {
           -- cmd = { ... },
